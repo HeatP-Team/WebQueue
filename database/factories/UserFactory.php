@@ -19,8 +19,7 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'firstName' => $faker->name,
-        'lastName' => $faker->lastName,
+        'name' => $faker->name,
         'karma' => $faker->randomFloat(100, 1, 100),
         'priority' => $faker->numberBetween(-1, 2),
         'lab' => $faker->numberBetween(1, 10),
