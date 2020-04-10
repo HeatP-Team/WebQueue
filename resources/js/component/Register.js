@@ -1,5 +1,4 @@
 import React from 'react';
-import "../../style/Register.less";
 
 export default class Register extends React.Component {
   constructor(props) {

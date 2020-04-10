@@ -10,16 +10,6 @@
   background-color: grey;
   min-height: 100vh;
 }
-.register__button-back,
-.register__button-register {
-  width: 40%;
-}
-@media (max-width: 1300px) {
-  .register__button-back,
-  .register__button-register {
-    width: 70%;
-  }
-}
 .auth__form {
   position: relative;
   display: flex;
@@ -94,6 +84,16 @@
     flex-direction: column;
     align-items: center;
     height: 40px;
+  }
+}
+.register__button-back,
+.register__button-register {
+  width: 40%;
+}
+@media (max-width: 1300px) {
+  .register__button-back,
+  .register__button-register {
+    width: 70%;
   }
 }
 .main-header {
