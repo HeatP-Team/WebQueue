@@ -1,5 +1,5 @@
 import React from 'react'
-import "../style/Auth.less";
+import "../../style/Auth.less";
 import Header from './Header'
 import Footer from './Footer'
 import Login from './Login';

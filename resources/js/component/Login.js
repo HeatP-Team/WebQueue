@@ -41,7 +41,7 @@ export default class Login extends React.Component {
     if (!this.reqsValidate())
       return;
 
-    fetch("site/login", {
+    fetch("/login", {
       method: "POST",
       body: JSON.stringify(this.state)
     })
