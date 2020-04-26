@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from "../module/fetchCSRF";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -45,12 +46,18 @@ export default class Login extends React.Component {
       method: "POST",
       body: JSON.stringify(this.state)
     })
-      .then(res => res.json())
+      .then(res => res.text())
       .then(data => {
-        document.querySelector(".login__error").textContent = data.errors;
+          console.log("Na pas");
+          console.log(data);
+          if (data.success === true)
+              window.location.href = data.url;
+          else
+              document.querySelector(".login__error").textContent = data.error;
+          console.log("lavandos");
       })
       .catch(err => {
-        document.querySelector(".login__error").textContent = "Ошибка сервера";
+        document.querySelector(".login__error").textContent = err;
       });
   }
 
