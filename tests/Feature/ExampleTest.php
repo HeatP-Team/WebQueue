@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use App\User;
 
 class ExampleTest extends TestCase
 {
@@ -14,8 +15,15 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $response = $this->get('/');
-
-        $response->assertStatus(200);
+        $user = factory(User::class)->make()->toArray();
+        $user["password"] = 42;
+        User::create($user);
+        $response =  $this->post("/login",[
+            "login" => $user["login"],
+            "password" => 42
+        ]);
+        $tmp = $response->json();
+        var_dump($tmp);
+        $this->assertEquals($tmp["success"], true);
     }
 }
