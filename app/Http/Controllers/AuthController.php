@@ -1,26 +1,24 @@
 <?php
 
+
 namespace App\Http\Controllers;
 
-use App\Providers\RouteServiceProvider;
-//use Illuminate\Foundation\Auth\RedirectsUsers;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\ValidationException;
-
+use Illuminate\Support\Facades\Validator;
 
 
 class AuthController extends Controller
 {
-    //use RedirectsUsers;
+    protected const WRONG_CREDITS_ERROR             = 'wrongCredits';
+    protected const FAILED_VALIDATION_ERROR         = 'failedValidation';
 
-//    /**
-//     * Where to redirect users after login.
-//     *
-//     * @var string
-//     */
-//    protected $redirectTo = RouteServiceProvider::HOME;
+    protected const ERROR_TYPES = [
+        self::WRONG_CREDITS_ERROR,
+        self::FAILED_VALIDATION_ERROR
+    ];
 
     /**
      * Create a new controller instance.
@@ -30,19 +28,6 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    protected function sendFailedLoginResponse(Request $request)
-    {
-        return response()->json([
-            'success' => 'false',
-            'errors'  => 'wrong credits',
-        ], 400);
-    }
-
-    public function username()
-    {
-        return 'login';
     }
 
     /**
@@ -57,38 +42,30 @@ class AuthController extends Controller
 
 
     /**
-     * Handle a login request to the application.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return Response|\Symfony\Component\HttpFoundation\Response|void
-     *
-     * @throws ValidationException
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
-        $this->validateLogin($request);
+        if ($this->validationFails($request))
+            return $this->sendFailedLoginResponse($request, self::FAILED_VALIDATION_ERROR);
 
-        if ($this->attemptLogin($request)) {
-            return $this->sendLoginResponse($request);
-        }
+        if ($this->loginFails($request))
+            return $this->sendFailedLoginResponse($request, self::WRONG_CREDITS_ERROR);
 
-        return $this->sendFailedLoginResponse($request);
+        return $this->sendLoginResponse($request);
     }
 
     /**
-     * Validate the user login request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return void
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * @param Request $request
+     * @return bool
      */
-    protected function validateLogin(Request $request)
+    protected function validationFails(Request $request)
     {
-        $request->validate([
-            $this->username() => 'required|string',
-            'password' => 'required|string',
-        ]);
+        return Validator::make($this->credentials($request), [
+            'login' => 'required|gt:100005',
+            'password' => 'required'
+        ])->fails();
     }
 
     /**
@@ -97,9 +74,9 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
-    protected function attemptLogin(Request $request)
+    protected function loginFails(Request $request)
     {
-        return $this->guard()->attempt(
+        return !$this->guard()->attempt(
             $this->credentials($request), $request->filled('remember')
         );
     }
@@ -112,7 +89,10 @@ class AuthController extends Controller
      */
     protected function credentials(Request $request)
     {
-        return $request->only($this->username(), 'password');
+        return [
+            'login' => $request->json()->get('login'),
+            'password' => $request->json()->get('password')
+        ];
     }
 
     /**
@@ -126,9 +106,19 @@ class AuthController extends Controller
         $request->session()->regenerate();
 
         return response()->json([
-            'success' => 'true'
-        ], 204);
+            'success' => true,
+            'url' => '/queue'
+        ], 200);
     }
+
+    protected function sendFailedLoginResponse(Request $request, String $reason)
+    {
+        return response()->json([
+            'success' => false,
+            'error'  => $reason
+            ], 201);
+    }
+
 
     /**
      * Log the user out of the application.
@@ -138,13 +128,13 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        //TODO: Finish and refactor this method
         $this->guard()->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        //incompleted!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         return response()->json([
             'success' => 'true'
         ], 204);

@@ -14,11 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/login', 'AuthController@showLoginForm')->middleware('guest');
 
-Route::get('/login', 'AuthController@showLoginForm');
-Route::post('/login', 'AuthController@login');
+Route::get('/queue', 'QueueController@queue');
 
-//Route::get('/home', 'HomeController@index')->name('home');

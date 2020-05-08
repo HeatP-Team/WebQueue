@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from "../module/fetchCSRF";
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -41,13 +42,16 @@ export default class Login extends React.Component {
     if (!this.reqsValidate())
       return;
 
-    fetch("/login", {
+    fetch("/api/login", {
       method: "POST",
       body: JSON.stringify(this.state)
     })
       .then(res => res.json())
       .then(data => {
-        document.querySelector(".login__error").textContent = data.errors;
+        if (data.message === "Authenticated")
+          window.location.href = data.url;
+        else
+          document.querySelector(".login__error").textContent = data.message;
       })
       .catch(err => {
         document.querySelector(".login__error").textContent = "Ошибка сервера";

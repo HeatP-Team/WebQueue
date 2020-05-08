@@ -18,4 +18,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/user', 'UserController');
 
-
+Route::post('/login', 'AuthController@login');
