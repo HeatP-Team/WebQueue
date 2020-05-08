@@ -46,16 +46,15 @@ export default class Login extends React.Component {
       method: "POST",
       body: JSON.stringify(this.state)
     })
-      .then(res => res.text())
+      .then(res => res.json())
       .then(data => {
-          console.log(data);
-          if (data.success === true)
-              window.location.href = data.url;
-          else
-              document.querySelector(".login__error").textContent = data.error;
+        if (data.message === "Authenticated")
+          window.location.href = data.url;
+        else
+          document.querySelector(".login__error").textContent = data.message;
       })
       .catch(err => {
-        document.querySelector(".login__error").textContent = err;
+        document.querySelector(".login__error").textContent = "Server error";
       });
   }
 

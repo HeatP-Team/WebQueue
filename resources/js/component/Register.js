@@ -1,5 +1,4 @@
 import React from 'react';
-import "../../style/Register.less";
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -35,9 +34,24 @@ export default class Register extends React.Component {
     if (!this.reqsValidate())
       return;
 
-
+    fetch("/api/register", {
+      method: "POST",
+      body: JSON.stringify(this.state)
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.message === "Registered") {
+          const loginError = document.querySelector(".register__error");
+          loginError.textContent = "Check your email";
+          loginError.classList.add("register__message");
+        }
+        else
+          document.querySelector(".register__error").textContent = data.message;
+      })
+      .catch(err => {
+        document.querySelector(".register__error").textContent = "Server error";
+      });
   }
-
   render() {
     return (
       <div className="auth__form register">
@@ -46,7 +60,7 @@ export default class Register extends React.Component {
           onChange={this.handleChangeLogin}
           value={this.state.login}
         />
-        <p className="auth__error"></p>
+        <p className="auth__error register__error"></p>
         <div className="auth__btns">
           <button className="auth__button register__button-back"
             onClick={this.handleClickBack}

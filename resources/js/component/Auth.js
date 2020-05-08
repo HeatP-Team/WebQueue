@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import "../../style/Auth.less";
 import Header from './Header'
 import Footer from './Footer'
