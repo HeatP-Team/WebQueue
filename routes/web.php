@@ -15,8 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
 Route::get('/queue', 'QueueController@queue')->middleware('auth');
 
-Route::get('/login', 'LoginController@showLoginForm')->name('login');
+Route::get('/auth', 'LoginController@showLoginForm')->name('login');
 Route::post('/login', 'LoginController@login');

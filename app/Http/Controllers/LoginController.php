@@ -13,6 +13,22 @@ class LoginController extends Controller
 {
     use AuthenticatesUsers;
 
+    const AUTHENTICATED_MESSAGE = 'Authenticated';
+
+    /**
+     * Where to redirect users after registration.
+     *
+     * @var string
+     */
+    protected $redirectTo = RouteServiceProvider::HOME;
+
+    /**
+     * @var array
+     */
+    protected $messages = [
+        'Authenticated' => self::AUTHENTICATED_MESSAGE
+    ];
+
     /**
      * Create a new controller instance.
      *
@@ -21,16 +37,6 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
-    }
-
-    /**
-     * Show the application's login form.
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function showLoginForm()
-    {
-        return view('auth');
     }
 
     /**
@@ -53,8 +59,8 @@ class LoginController extends Controller
     protected function authenticated(Request $request, $user)
     {
         return response()->json([
-            'message' => 'Authenticated',
-            'url' => RouteServiceProvider::HOME
+            'message' => $this->messages['Authenticated'],
+            'url' => $this->redirectTo
         ]);
     }
 
