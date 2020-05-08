@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', 'AuthController@showLoginForm')->middleware('guest');
 
-Route::get('/queue', 'QueueController@queue');
 
+Route::get('/queue', 'QueueController@queue')->middleware('auth');
+
+Route::get('/login', 'LoginController@showLoginForm')->name('login');
+Route::post('/login', 'LoginController@login');
