@@ -90,6 +90,9 @@
 .register__button-register {
   width: 40%;
 }
+.register__message {
+  color: #a9c45e;
+}
 @media (max-width: 1300px) {
   .register__button-back,
   .register__button-register {

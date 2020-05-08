@@ -54,7 +54,7 @@ export default class Login extends React.Component {
           document.querySelector(".login__error").textContent = data.message;
       })
       .catch(err => {
-        document.querySelector(".login__error").textContent = "Ошибка сервера";
+        document.querySelector(".login__error").textContent = "Server error";
       });
   }
 
