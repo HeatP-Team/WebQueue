@@ -16,6 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
+        //TODO:Bug?
         UserResource::collection(User::all());
     }
 

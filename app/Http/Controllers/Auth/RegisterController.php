@@ -1,8 +1,6 @@
 <?php
 
-
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -11,7 +9,6 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-
 
 class RegisterController extends Controller
 {
@@ -43,11 +40,6 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-//    public function register(Request $request)
-//    {
-//        dd(1);
-//    }
-
     /**
      * Get a validator for an incoming registration request.
      *
@@ -63,7 +55,6 @@ class RegisterController extends Controller
         ]);
     }
 
-    //Password is required on registration form
     /**
      * Create a new user instance after a valid registration.
      *
@@ -76,6 +67,7 @@ class RegisterController extends Controller
             'name' => 'Foo Name',
             'login' => $data['login'],
             'password' => Hash::make($data['password']),
+            'email' => 'foo@email.com',
             'karma' => rand(
                 config('constants.user.minDefaultKarma'),
                 config('constants.user.maxDefaultKarma')
