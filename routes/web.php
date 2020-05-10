@@ -17,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 //TODO: Think about using Auth::routes()
 Route::get('/queue', 'QueueController@queue')->middleware('auth');
 
-Route::get('/auth', 'AuthController@showAuthForm')->name('login');
+Route::get('/auth', 'Auth\AuthController@showAuthForm')->name('login');
 
-Route::post('/login', 'LoginController@login');
+Route::post('/login', 'Auth\LoginController@login');
 
-Route::post('/register', 'RegisterController@register');
+Route::post('/register', 'Auth\RegisterController@register');
 
-Route::get('email/verify/{id}/{hash}', 'VerificationController@verify')->name('verification.verify');
-Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
+Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
