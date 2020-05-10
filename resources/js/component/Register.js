@@ -1,4 +1,5 @@
 import React from 'react';
+import fetch from "../module/fetchCSRF";
 
 export default class Register extends React.Component {
   constructor(props) {
@@ -60,7 +61,7 @@ export default class Register extends React.Component {
     if (!this.reqsValidate())
       return;
 
-    fetch("/api/register", {
+    fetch("/register", {
       method: "POST",
       body: JSON.stringify(this.state)
     })
