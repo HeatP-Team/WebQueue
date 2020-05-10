@@ -12,7 +12,7 @@ class AuthController extends Controller
      *
      * @return View
      */
-    public function showLoginForm()
+    public function showAuthForm()
     {
         return view('auth');
     }
