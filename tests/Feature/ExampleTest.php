@@ -19,14 +19,11 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
-        $this->post("/register", [
-            "login" => "100005",
-            "password" => "12121212",
-            "password_confirmation" => "12121212"
-        ]);
-
+        $response = $this->post("/login", [
+            "login" => "232323",
+            "password" => "12121212"
+        ])->json();
+        print_r($response);
         $this->assertTrue(true);
-
-
     }
 }
