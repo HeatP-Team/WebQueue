@@ -25,3 +25,4 @@ Route::post('/register', 'Auth\RegisterController@register');
 
 Route::get('email/verify/{id}/{hash}', 'Auth\VerificationController@verify')->name('verification.verify');
 Route::get('email/resend', 'Auth\VerificationController@resend')->name('verification.resend');
+//
